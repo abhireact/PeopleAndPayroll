@@ -89,7 +89,6 @@ function Createsalary() {
           }
         );
         if (response.status === 200) {
-          // console.log(response.data, "all earning data");
           setAllEarnings(response.data);
         }
       } catch (error) {
@@ -214,7 +213,7 @@ function Createsalary() {
           );
 
           if (response.status === 200) {
-            console.log("Updated salary details Successfully");
+            message.success("Updated salary details Successfully");
             // action.resetForm();
           }
         } catch (error) {
@@ -226,7 +225,7 @@ function Createsalary() {
               },
             });
 
-            console.log("Created salary details Successfully");
+            message.success("Created salary details Successfully");
             action.resetForm();
           } catch (postError) {
             console.error("Error creating salary details:", postError);

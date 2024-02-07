@@ -1,6 +1,6 @@
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
-import Addemployee from "./addemployee";
+import Editemployee from "./addemployee";
 import Updatesalary from "./updatesalary";
 
 const updateemployee = () => {
@@ -8,7 +8,7 @@ const updateemployee = () => {
     <>
       <DashboardLayout>
         <DashboardNavbar />
-        <Addemployee />
+        <Editemployee />
         <Updatesalary />
       </DashboardLayout>
     </>

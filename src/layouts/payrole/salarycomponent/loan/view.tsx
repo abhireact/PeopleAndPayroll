@@ -1,6 +1,7 @@
 import Grid from "@mui/material/Grid";
 import { useFormik } from "formik";
 import axios from "axios";
+import { useState } from "react";
 
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
@@ -9,6 +10,7 @@ import MDInput from "components/MDInput";
 
 import MDBox from "components/MDBox";
 import Cookies from "js-cookie";
+import { message } from "antd";
 const token = Cookies.get("token");
 
 function transformString(inputString: string): string {
@@ -25,6 +27,7 @@ function transformString(inputString: string): string {
 }
 const View = (props: any) => {
   const { setOpendialog, data } = props;
+  const [errorMessage, setErrorMessage] = useState("");
   const handleClosedialog = () => {
     setOpendialog(false);
   };
@@ -41,33 +44,48 @@ const View = (props: any) => {
       paid_through_account: "",
     },
     // validationSchema: validationSchema,
-    onSubmit: (values, action) => {
+    enableReinitialize: true,
+    onSubmit: async (values, action) => {
       const sendData = {
         employee_name: values.employee_name,
-
         loan_name: values.loan_name,
         loan_amount: values.loan_amount,
-
         loan_repay_date: transformString(values.repayment_date),
-
         repayment_amount: values.repayment_amount,
         paid_through_account: values.paid_through_account,
       };
-      axios.post("http://10.0.20.133:8000/loans_child", sendData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      handleClosedialog();
 
-      action.resetForm();
+      await axios
+        .post("http://10.0.20.133:8000/loans_child", sendData, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+
+          if (response.status === 200) {
+            window.location.reload();
+            message.success("update repayment successfull");
+          }
+        })
+        .catch((error) => {
+          setErrorMessage(error.response.data?.detail || "error occured");
+          message.error("error occured");
+          console.log(error);
+        });
     },
   });
 
   return (
     <form onSubmit={handleSubmit}>
       <MDBox p={4}>
+        {errorMessage && (
+          <MDTypography color="error" variant="body2">
+            {errorMessage}
+          </MDTypography>
+        )}
         <Grid container>
           <Grid item sm={4}>
             <MDTypography variant="h6">Employee Name</MDTypography>
@@ -117,6 +135,7 @@ const View = (props: any) => {
               variant="standard"
               name="repayment_date"
               type="date"
+              required
               value={values.repayment_date}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -134,6 +153,7 @@ const View = (props: any) => {
               value={values.repayment_amount}
               onChange={handleChange}
               onBlur={handleBlur}
+              required
             />
           </Grid>
           <Grid item sm={4}>
@@ -147,6 +167,7 @@ const View = (props: any) => {
               value={values.paid_through_account}
               onChange={handleChange}
               onBlur={handleBlur}
+              required
             />
           </Grid>
 

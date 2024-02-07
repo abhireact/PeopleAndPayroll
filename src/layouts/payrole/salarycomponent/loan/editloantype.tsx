@@ -9,6 +9,7 @@ import MDInput from "components/MDInput";
 
 import axios from "axios";
 import Cookies from "js-cookie";
+import { message } from "antd";
 const token = Cookies.get("token");
 
 const Updatebreak = (props: any) => {
@@ -23,19 +24,22 @@ const Updatebreak = (props: any) => {
       pre_rate: editData.perquisite_rate,
     },
     // validationSchema: validationSchema,
-    onSubmit: (values, action) => {
+    onSubmit: async (values, action) => {
       const sendData = {
         old_loan_name: editData.loan_name,
         new_loan_name: values.loan_name,
         perquisite_rate: values.pre_rate,
       };
-      axios.put("http://10.0.20.133:8000/manage_loan", sendData, {
+      const response = await axios.put("http://10.0.20.133:8000/manage_loan", sendData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
-
+      if (response.status === 200) {
+        window.location.reload();
+        message.success("Upated Successfully");
+      }
       action.resetForm();
     },
   });

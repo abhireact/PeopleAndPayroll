@@ -22,6 +22,7 @@ import { MaterialUIControllerProvider } from "context";
 import { Provider } from "react-redux";
 import { store, persistor } from "Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
+import { ToastContainer } from "react-toastify";
 const root = createRoot(document.getElementById("root"));
 
 root.render(
@@ -29,6 +30,7 @@ root.render(
     <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter>
         <MaterialUIControllerProvider>
+          <ToastContainer />
           <App />
         </MaterialUIControllerProvider>
       </BrowserRouter>

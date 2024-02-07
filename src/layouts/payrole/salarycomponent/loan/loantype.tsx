@@ -14,25 +14,36 @@ import Editloan from "./editloantype";
 import Addloan from "./addloantype";
 import Dialog from "@mui/material/Dialog";
 import Cookies from "js-cookie";
+
+import { message } from "antd";
 const token = Cookies.get("token");
 
 const Manageloan = ({ setOpendialog }: any) => {
+  const [errorMessage, setErrorMessage] = useState("");
   const handleClosedialog = () => {
     setOpendialog(false);
   };
   const handleDeleteData = async (loan_name: any) => {
     console.log(loan_name, "Deleted Data");
-    try {
-      await axios.delete("http://10.0.20.133:8000/manage_loan/", {
+
+    await axios
+      .delete("http://10.0.20.133:8000/manage_loan/", {
         data: { loan_name: loan_name },
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          window.location.reload();
+          message.success("Deleted Successfully");
+        }
+      })
+      .catch((error) => {
+        setErrorMessage(error.response.data?.detail || "error occured");
+        console.error("Error deleting task:", error);
       });
-    } catch (error) {
-      console.error("Error deleting task:", error);
-    }
   };
   useEffect(() => {
     axios
@@ -113,7 +124,11 @@ const Manageloan = ({ setOpendialog }: any) => {
           Manage Loan
         </MDTypography>
       </Grid>
-
+      {errorMessage && (
+        <MDTypography color="error" variant="body2">
+          {errorMessage}
+        </MDTypography>
+      )}
       <Grid sx={{ display: "flex", justifyContent: "space-between" }}>
         <MDButton variant="outlined" color="info" onClick={handleClickOpen}>
           + Create New Loan Type

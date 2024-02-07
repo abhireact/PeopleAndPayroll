@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 const token = Cookies.get("token");
 
 import axios from "axios";
+import { message } from "antd";
 
 const Addbreak = (props: any) => {
   const { setOpen } = props;
@@ -21,18 +22,21 @@ const Addbreak = (props: any) => {
       pre_rate: 0,
     },
     // validationSchema: validationSchema,
-    onSubmit: (values, action) => {
+    onSubmit: async (values, action) => {
       const sendData = {
         loan_name: values.loan_name,
         perquisite_rate: values.pre_rate,
       };
-      axios.post("http://10.0.20.133:8000/manage_loan", sendData, {
+      const response = await axios.post("http://10.0.20.133:8000/manage_loan", sendData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
-
+      if (response.status === 200) {
+        window.location.reload();
+        message.success("Created Successfully");
+      }
       action.resetForm();
     },
   });
@@ -47,6 +51,7 @@ const Addbreak = (props: any) => {
           </Grid>
           <Grid item sm={6}>
             <MDInput
+              required
               variant="standard"
               name="loan_name"
               value={values.loan_name}

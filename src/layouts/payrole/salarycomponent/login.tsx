@@ -40,99 +40,11 @@ function CoverLogin() {
   //storing token
 
   console.log(data, typeof data, "academic data");
-  // storing acdemic data
 
-  //   useEffect(() => {
-  //     dispatched(updateAcademicName(data));
-  //     // console.log(dispatched, "dispatfrhjufwefhevhjwvfhj");
-  //   }, [dispatched, data]);
-  // storing class data
   console.log(classData, typeof classData, "academic classData");
-  //   useEffect(() => {
-  //     dispatched(updateClassName(classData));
-  //     // console.log(dispatched, "dispatfrhjufwefhevhjwvfhj");
-  //   }, [dispatched, classData]);
-  //   useEffect(() => {
-  //     dispatched(updateSectionName(sectionData));
-  //     // console.log(dispatched, "dispatfrhjufwefhevhjwvfhj");
-  //   }, [dispatched, sectionData]);
+
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
-  //   const academicdata = useSelector((state: any) => state.academicName);
-  //   console.log("academicdata", academicdata);
-  //   const classdata = useSelector((state: any) => state.className);
-  //   console.log("classdata", classdata);
-  //   const sectiondata = useSelector((state: any) => state.sectionName);
-  //   console.log("sectiondata", sectiondata);
-  //   useEffect(() => {
-  //     fetchAPI(); // Fetch data from API on component mount
-  //   }, []);
-
-  //   const fetchAPI = async () => {
-  //     try {
-  //       const response = await fetch("http://web:8000/mg_academic_year", {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-
-  //       const data = await response.json();
-
-  //       setData(data);
-  //       console.log(data, typeof data);
-  //       //   decryptData(data[0].encrypted_data);
-  //       //   console.log(data[0].encrypted_data, "ghihwefgkwefh");
-  //     } catch (error) {
-  //       console.log("Error fetching data:", error);
-  //     }
-  //   };
-  //   useEffect(() => {
-  //     fetchAPIClass(); // Fetch data from API on component mount
-  //   }, []);
-
-  //   const fetchAPIClass = async () => {
-  //     try {
-  //       const response = await fetch("http://10.0.20.133:8001/mg_class", {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-
-  //       const classdata = await response.json();
-
-  //       setClassData(classdata);
-  //       console.log(classdata, typeof classdata);
-  //       //   decryptData(data[0].encrypted_data);
-  //       //   console.log(data[0].encrypted_data, "ghihwefgkwefh");
-  //     } catch (error) {
-  //       console.log("Error fetching classdata:", error);
-  //     }
-  //   };
-  //   useEffect(() => {
-  //     fetchAPISection(); // Fetch data from API on component mount
-  //   }, []);
-
-  //   const fetchAPISection = async () => {
-  //     try {
-  //       const response = await fetch("http://10.0.20.133:8001/mg_section", {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-
-  //       const sectiondata = await response.json();
-
-  //       setSectionData(sectiondata);
-  //       console.log(sectiondata, typeof sectiondata);
-  //       //   decryptData(data[0].encrypted_data);
-  //       //   console.log(data[0].encrypted_data, "ghihwefgkwefh");
-  //     } catch (error) {
-  //       console.log("Error fetching classdata:", error);
-  //     }
-  //   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(rememberMe, "rememrmber me");
@@ -179,8 +91,9 @@ function CoverLogin() {
       if (res.data.access_token) {
         const token = res.data.access_token;
         Cookies.set("token", token, { expires: 7 });
-        navigate("/dashboards/analytics");
-        message.success("Login Successful");
+        // navigate("/dashboards/analytics");
+        window.location.reload();
+        message.success("Login Successful,Please refresh page");
       } else {
         message.error("Invalid email or password");
       }

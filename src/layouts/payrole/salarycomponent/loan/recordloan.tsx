@@ -15,6 +15,8 @@ import Checkbox from "@mui/material/Checkbox";
 
 import { FormControlLabel } from "@mui/material";
 import Cookies from "js-cookie";
+import { message } from "antd";
+
 const token = Cookies.get("token");
 
 function transformString(inputString: string): string {
@@ -31,6 +33,7 @@ function transformString(inputString: string): string {
 }
 const Recordloan = (props: any) => {
   const { setOpendialog } = props;
+  const [errorMessage, setErrorMessage] = useState("");
   const handleClosedialog = () => {
     setOpendialog(false);
   };
@@ -60,7 +63,7 @@ const Recordloan = (props: any) => {
       instalment_amount: "",
     },
     // validationSchema: validationSchema,
-    onSubmit: (values, action) => {
+    onSubmit: async (values, action) => {
       const sendData = {
         employee_name: employee,
         location_name: location,
@@ -74,15 +77,24 @@ const Recordloan = (props: any) => {
         paid_through_account: values.paid_through_account,
         reason: values.reason,
       };
-      axios.post("http://10.0.20.133:8000/record_loans", sendData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      handleClosedialog();
-
-      action.resetForm();
+      await axios
+        .post("http://10.0.20.133:8000/record_loans", sendData, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            window.location.reload();
+            message.success("Created Successfully");
+          }
+          handleClosedialog();
+        })
+        .catch((error) => {
+          setErrorMessage(error.response.data?.detail || "error occured");
+          console.log(error, "this is the error");
+        });
     },
   });
   const Fetchlocations = async () => {
@@ -135,6 +147,11 @@ const Recordloan = (props: any) => {
   return (
     <MDBox p={4}>
       <form onSubmit={handleSubmit}>
+        {errorMessage && (
+          <MDTypography color="error" variant="body2">
+            {errorMessage}
+          </MDTypography>
+        )}
         <Grid container sx={{ display: "flex", justifyContent: "center" }}>
           <Grid item sm={12} sx={{ display: "flex", justifyContent: "center" }} pb={4}>
             <MDTypography variant="h3" fontWeight="medium">

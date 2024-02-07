@@ -162,7 +162,7 @@ const Updates = (props: any) => {
         })
         .then((response) => {
           console.log("it is working", response);
-          //window.location.reload();
+          window.location.reload();
         })
         .catch((error) => {
           console.log("error is occurred", error);

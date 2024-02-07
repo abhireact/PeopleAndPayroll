@@ -162,7 +162,7 @@ const Employeesm = () => {
             </CardContent>
             <Stack direction="column" justifyContent="center">
               <Stack direction="row" justifyContent="space-between">
-                <MDTypography variant="body1">{deductor[0]?.deductor_father_name}</MDTypography>
+                <MDTypography variant="body1">{deductor[0]?.deductor_name}</MDTypography>
                 <Link href="/payrole/salarycomponent/taxes" variant="body2">
                   <IconButton>
                     <CreateRoundedIcon fontSize="medium" />
@@ -170,7 +170,7 @@ const Employeesm = () => {
                 </Link>
               </Stack>
               <MDTypography variant="subtitle2">
-                Son/Daughter of {deductor[0]?.deductor_name}
+                Son/Daughter of {deductor[0]?.deductor_father_name}
               </MDTypography>
             </Stack>
           </Card>

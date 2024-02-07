@@ -16,6 +16,7 @@ import Manageloan from "./loantype";
 import IconButton from "@mui/material/IconButton";
 import Cookies from "js-cookie";
 const token = Cookies.get("token");
+import { ToastContainer } from "react-toastify";
 
 const viewrecord = () => {
   const [data, setData] = useState([]);
@@ -106,6 +107,7 @@ const viewrecord = () => {
   return (
     <DashboardLayout>
       <DashboardNavbar />
+
       <Grid container sx={{ display: "flex", justifyContent: "flex-end" }}>
         <Grid>
           <MDButton variant="outlined" color="info" onClick={handleOpenloan}>
